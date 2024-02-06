@@ -38,12 +38,12 @@ namespace clock_scr.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("8")]
-        public double watchSize {
+        public double cameraDistance {
             get {
-                return ((double)(this["watchSize"]));
+                return ((double)(this["cameraDistance"]));
             }
             set {
-                this["watchSize"] = value;
+                this["cameraDistance"] = value;
             }
         }
         
@@ -82,22 +82,7 @@ namespace clock_scr.Properties {
                 this["offsetTF"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int dateIndication
-        {
-            get
-            {
-                return ((int)(this["dateIndication"]));
-            }
-            set
-            {
-                this["dateIndication"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFFFF")]
@@ -158,6 +143,40 @@ namespace clock_scr.Properties {
             }
         }
         
-
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int dateIndication {
+            get {
+                return ((int)(this["dateIndication"]));
+            }
+            set {
+                this["dateIndication"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("22")]
+        public double watchFontSize {
+            get {
+                return ((double)(this["watchFontSize"]));
+            }
+            set {
+                this["watchFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MS Gothic")]
+        public string selectFont {
+            get {
+                return ((string)(this["selectFont"]));
+            }
+            set {
+                this["selectFont"] = value;
+            }
+        }
     }
 }

@@ -45,29 +45,33 @@ namespace clock_scr
         private bool changeTF;
         private bool toggleTF;
 
-        private string faceHL = "";
-        private string faceHLN = "";
-        private string faceHR = "";
-        private string faceHRN = "";
-        private string faceML = "";
-        private string faceMLN = "";
-        private string faceMR = "";
-        private string faceMRN = "";
-        private string faceTF = "";
+        private string faceHL = string.Empty;
+        private string faceHLN = string.Empty;
+        private string faceHR = string.Empty;
+        private string faceHRN = string.Empty;
+        private string faceML = string.Empty;
+        private string faceMLN = string.Empty;
+        private string faceMR = string.Empty;
+        private string faceMRN = string.Empty;
+        private string faceTF = string.Empty;
         private double offsetHM = 0;
-        private double watchSize;
+        private double cameraDistance;
         private double gradientBorder;
+        private double watchFontSize;
         private int timeFormat;
         private double offsetTF;
         private int dateIndication;
-        private string? displayColor;
-        private string? backFrameColor;
+        private string displayColor = string.Empty;
+        private string backFrameColor = string.Empty;
+        private string selectFont = string.Empty;
 
-        private TextBlock[] textBlockTop;
-        private TextBlock[] textBlockBottom;
-        private TextBlock[] textBlockTF;
-        private readonly LinearGradientBrush TopGradientBrush = new() { StartPoint = new Point(0, 0), EndPoint = new Point(0, 1), GradientStops = new GradientStopCollection { new GradientStop(), new GradientStop() } };
-        private readonly LinearGradientBrush BottomGradientBrush = new() { StartPoint = new Point(0, 0), EndPoint = new Point(0, 1), GradientStops = new GradientStopCollection { new GradientStop(), new GradientStop() } };
+        private Border[]? wrapperTop;
+        private Border[]? wrapperBottom;
+        private Border[]? wrapperTF;
+        private TextBlock[]? textTop;
+        private TextBlock[]? textBottom;
+        private TextBlock[]? textTF;
+       
         public Model3D HLT
         {
             get { return (Model3D)GetValue(HLTProperty); }
@@ -229,8 +233,8 @@ namespace clock_scr
 
         public static readonly DependencyProperty DIProperty =
             DependencyProperty.Register(nameof(DI), typeof(Model3D), typeof(MainPage), new PropertyMetadata(null));
-
-        MainViewModel ViewModel;
+        
+        readonly MainViewModel ViewModel;
 
         public MainPage()
         {
@@ -273,50 +277,66 @@ namespace clock_scr
         private void InitializeCustomSettings()
         {
 
-            watchSize = Properties.Settings.Default.watchSize;
+            cameraDistance = Properties.Settings.Default.cameraDistance;
             offsetHM = Properties.Settings.Default.offsetHM;
             gradientBorder = Properties.Settings.Default.gradientBorder;
+            watchFontSize = Properties.Settings.Default.watchFontSize;
             timeFormat = Properties.Settings.Default.timeFormat;
             offsetTF = Properties.Settings.Default.offsetTF;
             dateIndication = Properties.Settings.Default.dateIndication;
             displayColor = Properties.Settings.Default.displayColor;
             backFrameColor = Properties.Settings.Default.backFrameColor;
+            selectFont = Properties.Settings.Default.selectFont;
 
             SetMatrix(Properties.Settings.Default.rotateAngel);
         }
 
         private void InitializeTextBlocks()
         {
-            textBlockTop = new TextBlock[]
+            wrapperTop = new Border[]
             {
-                HrLeftTop, HrLeftTopNew, HrRightTop, HrRightTopNew,
-                MinLeftTop, MinLeftTopNew, MinRightTop, MinRightTopNew
+                HrLeftTopContainer, HrLeftTopContainerNew, HrRightTopContainer, HrRightTopContainerNew,
+                MinLeftTopContainer, MinLeftTopContainerNew, MinRightTopContainer, MinRightTopContainerNew
             };
-            textBlockBottom = new TextBlock[]
+            wrapperBottom = new Border[]
             {
-                HrLeftBottom, HrLeftBottomNew, HrRightBottom, HrRightBottomNew,
-                MinLeftBottom, MinLeftBottomNew, MinRightBottom, MinRightBottomNew
+                HrLeftBottomContainer, HrLeftBottomContainerNew, HrRightBottomContainer, HrRightBottomContainerNew,
+                MinLeftBottomContainer, MinLeftBottomContainerNew, MinRightBottomContainer, MinRightBottomContainerNew
             };
-            textBlockTF = new TextBlock[]
+            wrapperTF = new Border[]
             {
-                TimeFormatAM,TimeFormatPM
+                 TimeFormatAMContainer,TimeFormatPMContainer
+            };
+            textTop = new TextBlock[]
+            {
+                HrLeftTopText, HrLeftTopTextNew, HrRightTopText, HrRightTopTextNew,
+                MinLeftTopText, MinLeftTopTextNew, MinRightTopText, MinRightTopTextNew
+            };
+            textBottom = new TextBlock[]
+            {
+                HrLeftBottomText, HrLeftBottomTextNew, HrRightBottomText, HrRightBottomTextNew,
+                MinLeftBottomText, MinLeftBottomTextNew, MinRightBottomText, MinRightBottomTextNew
+            };
+            textTF = new TextBlock[]
+            {
+                TimeFormatAMText,TimeFormatPMText
             };
         }
 
-        private void ChangeStyle(TextBlock[] textBlocks, Style baseStyle, Setter[] additionalSetters)
+        private static void ChangeStyle<T>(T[]? elements, Style baseStyle, Setter[] additionalSetters) where T : FrameworkElement
         {
-            Style newStyle = new(typeof(TextBlock))
+            if(elements != null)
             {
-                BasedOn = baseStyle
-            };
-            foreach (Setter setter in additionalSetters)
-            {
-                newStyle.Setters.Add(setter);
-            }
+                Style newStyle = new(typeof(T), baseStyle);
+                foreach (Setter setter in additionalSetters)
+                {
+                    newStyle.Setters.Add(setter);
+                }
 
-            foreach (var textBlock in textBlocks)
-            {
-                textBlock.Style = newStyle;
+                foreach (T element in elements)
+                {
+                    element.Style = newStyle;
+                }
             }
         }
 
@@ -325,21 +345,27 @@ namespace clock_scr
 
             PerspectiveCamera camera = new()
             {
-                Position = new Point3D(0, 0, watchSize)
+                Position = new Point3D(0, 0, cameraDistance)
             };
             viewport.Camera = camera;
             LoadOffset();
 
-            Setter foregroundSetter = new(TextBlock.ForegroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString(displayColor)));
-            Setter backgroundSetter = new(TextBlock.BackgroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString(backFrameColor)));
-            Setter opacityMaskTopSetter = new(TextBlock.OpacityMaskProperty, new LinearGradientBrush(new GradientStopCollection()
+            Setter textForegroundSetter = new(TextBlock.ForegroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString(displayColor)));
+            Setter textBackgroundSetter = new(TextBlock.BackgroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString(backFrameColor)));
+            Setter wrapperBackgroundSetter = new(Border.BackgroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString(backFrameColor)));
+            Setter opacityMaskTopSetter = new(OpacityMaskProperty, new LinearGradientBrush(new GradientStopCollection()
                 {new GradientStop(Colors.Black, gradientBorder), new GradientStop(Colors.Transparent, gradientBorder)}, new Point(0, 0), new Point(0, 1)));
-            Setter opacityMaskBottomSetter = new(TextBlock.OpacityMaskProperty, new LinearGradientBrush(new GradientStopCollection()
-                {new GradientStop(Colors.Transparent, 1 - gradientBorder), new GradientStop(Colors.Black, 1 - gradientBorder)}, new Point(0, 0), new Point(0, 1))); ChangeStyle(textBlockTop, (Style)Resources["FaceStyleTop"], new Setter[] { foregroundSetter, backgroundSetter });
-            
-            //ChangeStyle(textBlockTop, (Style)Resources["FaceStyleTop"], new Setter[] { foregroundSetter, backgroundSetter, opacityMaskTopSetter }); 
-            ChangeStyle(textBlockBottom, (Style)Resources["FaceStyleBottom"], new Setter[] { foregroundSetter, backgroundSetter, opacityMaskBottomSetter });
-            ChangeStyle(textBlockTF, (Style)Resources["FaceStyleTF"], new Setter[] { foregroundSetter, backgroundSetter });
+            Setter opacityMaskBottomSetter = new(OpacityMaskProperty, new LinearGradientBrush(new GradientStopCollection()
+                {new GradientStop(Colors.Transparent, 1 - gradientBorder), new GradientStop(Colors.Black, 1 - gradientBorder)}, new Point(0, 0), new Point(0, 1)));
+            Setter watchFontSizeSetter = new(FontSizeProperty, watchFontSize);
+            Setter selectFontSetter = new(FontFamilyProperty, new FontFamily(selectFont));
+
+            ChangeStyle(wrapperTop, (Style)Resources["WrapperContainerTop"], new Setter[] { wrapperBackgroundSetter, opacityMaskTopSetter });
+            ChangeStyle(wrapperBottom, (Style)Resources["WrapperContainerBottom"], new Setter[] { wrapperBackgroundSetter, opacityMaskBottomSetter });
+            ChangeStyle(wrapperTF, (Style)Resources["WrapperContainerTF"], new Setter[] { wrapperBackgroundSetter });
+            ChangeStyle(textTop, (Style)Resources["FaceStyleTop"], new Setter[] { textForegroundSetter, textBackgroundSetter, watchFontSizeSetter, selectFontSetter });
+            ChangeStyle(textBottom, (Style)Resources["FaceStyleBottom"], new Setter[] { textForegroundSetter, textBackgroundSetter, watchFontSizeSetter, selectFontSetter });
+            ChangeStyle(textTF, (Style)Resources["FaceStyleTF"], new Setter[] { textForegroundSetter, textBackgroundSetter, selectFontSetter });
 
             GetCurrentTime();
             SetLastTime();
@@ -348,14 +374,14 @@ namespace clock_scr
             {
                 if (timeFormat == 1)
                 {
-                    TimeFormatPM.RenderTransform = new ScaleTransform(1, -1);
+                    TimeFormatPMText.RenderTransform = new ScaleTransform(1, -1);
                 }
                 else if (timeFormat == 2)
                 {
-                    TimeFormatPM.RenderTransform = new ScaleTransform(-1, 1);
+                    TimeFormatPMText.RenderTransform = new ScaleTransform(-1, 1);
                 }
                 faceTF = FaceTFCoord(-2.0 - offsetHM - offsetTF, toggleTF, timeFormat);
-                TF = CubeUtility.CreateFaceModel(faceTF, nameof(TimeFormatAM), nameof(TimeFormatPM));
+                TF = CubeUtility.CreateFaceModel(faceTF, nameof(TimeFormatAMText), nameof(TimeFormatPMText));
             }
             else
             {
@@ -371,28 +397,28 @@ namespace clock_scr
                 DI = new Model3DGroup();
             }
 
-            CultureInfo englishCulture = new CultureInfo("en-US");
+            CultureInfo englishCulture = new("en-US");
             DateTime currentDate = DateTime.Now;
 
             DateIndicationLeft.Text = currentDate.ToString("dd", englishCulture);
             DateIndicationTop.Text = currentDate.ToString("dddd", englishCulture);
             DateIndicationDown.Text = currentDate.ToString("MMMM yyyy", englishCulture);
-            HrRightTop.Text = (currentHour % 10).ToString();
-            HrRightBottom.Text = (currentHour % 10).ToString();
-            HrLeftTop.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
-            HrLeftBottom.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
-            MinRightTop.Text = (currentMinute % 10).ToString();
-            MinRightBottom.Text = (currentMinute % 10).ToString();
-            MinLeftTop.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
-            MinLeftBottom.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
-            MRT = CubeUtility.CreateFaceModel(faceMR, nameof(MinRightTop));
-            MRB = CubeUtility.CreateFaceModel(faceMR, nameof(MinRightBottom));
-            MLT = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftTop));
-            MLB = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftBottom));
-            HRT = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightTop));
-            HRB = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightBottom));
-            HLT = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftTop));
-            HLB = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftBottom));
+            HrRightTopText.Text = (currentHour % 10).ToString();
+            HrRightBottomText.Text = (currentHour % 10).ToString();
+            HrLeftTopText.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
+            HrLeftBottomText.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
+            MinRightTopText.Text = (currentMinute % 10).ToString();
+            MinRightBottomText.Text = (currentMinute % 10).ToString();
+            MinLeftTopText.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
+            MinLeftBottomText.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
+            MRT = CubeUtility.CreateFaceModel(faceMR, nameof(MinRightTopContainer));
+            MRB = CubeUtility.CreateFaceModel(faceMR, nameof(MinRightBottomContainer));
+            MLT = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftTopContainer));
+            MLB = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftBottomContainer));
+            HRT = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightTopContainer));
+            HRB = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightBottomContainer));
+            HLT = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftTopContainer));
+            HLB = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftBottomContainer));
             
         }
 
@@ -409,15 +435,17 @@ namespace clock_scr
             clockTimer.Start();
         }
 
-        public void SetSettings(double offset1, double size, double border, int tf, double offset2, int di, string color1, string color2){
+        public void SetSettings(double offset1, double size, double border, double fontsize,int tf, double offset2, int di, string color1, string color2, string font){
             offsetHM = offset1;
-            watchSize = size;
+            cameraDistance = size;
             gradientBorder = border;
+            watchFontSize = fontsize;
             timeFormat = tf;
             offsetTF = offset2;
             dateIndication = di;
             displayColor = color1;
             backFrameColor = color2;
+            selectFont = font;
         }
 
         private static string FaceCoord(double p, bool f)
@@ -461,27 +489,27 @@ namespace clock_scr
             {
                 if (changeMinute1)
                 {
-                    MinRightTopNew.Text = (currentMinute % 10).ToString();
-                    MinRightBottomNew.Text = (currentMinute % 10).ToString();
-                    MRBN = CubeUtility.CreateFaceModel(faceMRN, nameof(MinRightBottomNew));
+                    MinRightTopTextNew.Text = (currentMinute % 10).ToString();
+                    MinRightBottomTextNew.Text = (currentMinute % 10).ToString();
+                    MRBN = CubeUtility.CreateFaceModel(faceMRN, nameof(MinRightBottomContainerNew));
                 }
                 if (changeMinute10)
                 {
-                    MinLeftTopNew.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
-                    MinLeftBottomNew.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
-                    MLBN = CubeUtility.CreateFaceModel(faceMLN, nameof(MinLeftBottomNew));
+                    MinLeftTopTextNew.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
+                    MinLeftBottomTextNew.Text = (currentMinute >= 10 ? currentMinute / 10 : 0).ToString();
+                    MLBN = CubeUtility.CreateFaceModel(faceMLN, nameof(MinLeftBottomContainerNew));
                 }
                 if (changeHour1)
                 {
-                    HrRightTopNew.Text = (currentHour % 10).ToString();
-                    HrRightBottomNew.Text = (currentHour % 10).ToString();
-                    HRBN = CubeUtility.CreateFaceModel(faceHRN, nameof(HrRightBottomNew));
+                    HrRightTopTextNew.Text = (currentHour % 10).ToString();
+                    HrRightBottomTextNew.Text = (currentHour % 10).ToString();
+                    HRBN = CubeUtility.CreateFaceModel(faceHRN, nameof(HrRightBottomContainerNew));
                 }
                 if (changeHour10)
                 {
-                    HrLeftTopNew.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
-                    HrLeftBottomNew.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
-                    HLBN = CubeUtility.CreateFaceModel(faceHLN, nameof(HrLeftBottomNew));
+                    HrLeftTopTextNew.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
+                    HrLeftBottomTextNew.Text = (currentHour >= 10 ? currentHour / 10 : 0).ToString();
+                    HLBN = CubeUtility.CreateFaceModel(faceHLN, nameof(HrLeftBottomContainerNew));
                 }
 
             }
@@ -489,19 +517,19 @@ namespace clock_scr
             {
                 if (changeMinute1)
                 {
-                    MRTN = CubeUtility.CreateFaceModel(faceMR, nameof(MinRightTopNew));
+                    MRTN = CubeUtility.CreateFaceModel(faceMR, nameof(MinRightTopContainerNew));
                 }
                 if (changeMinute10)
                 {
-                    MLTN = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftTopNew));
+                    MLTN = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftTopContainerNew));
                 }
                 if (changeHour1)
                 {
-                    HRTN = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightTopNew));
+                    HRTN = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightTopContainerNew));
                 }
                 if (changeHour10)
                 {
-                    HLTN = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftTopNew));
+                    HLTN = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftTopContainerNew));
                 }
             }
             if (rotationCount < 36)
@@ -536,44 +564,44 @@ namespace clock_scr
             {
                 if (changeMinute1)
                 {
-                    MinRightTop.Text = MinRightTopNew.Text;
-                    MinRightBottom.Text = MinRightBottomNew.Text;
+                    MinRightTopText.Text = MinRightTopTextNew.Text;
+                    MinRightBottomText.Text = MinRightBottomTextNew.Text;
 
-                    MRT = CubeUtility.CreateFaceModel(faceMR, MinRightTop);
-                    MRB = CubeUtility.CreateFaceModel(faceMR, MinRightBottom);
+                    MRT = CubeUtility.CreateFaceModel(faceMR, MinRightTopContainer);
+                    MRB = CubeUtility.CreateFaceModel(faceMR, MinRightBottomContainer);
 
                     MRTN = new Model3DGroup();
                     MRBN = new Model3DGroup();
                 }
                 if (changeMinute10)
                 {
-                    MinLeftTop.Text = MinLeftTopNew.Text;
-                    MinLeftBottom.Text = MinLeftBottomNew.Text;
+                    MinLeftTopText.Text = MinLeftTopTextNew.Text;
+                    MinLeftBottomText.Text = MinLeftBottomTextNew.Text;
 
-                    MLT = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftTop));
-                    MLB = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftBottom));
+                    MLT = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftTopContainer));
+                    MLB = CubeUtility.CreateFaceModel(faceML, nameof(MinLeftBottomContainer));
 
                     MLTN = new Model3DGroup();
                     MLBN = new Model3DGroup();
                 }
                 if (changeHour1)
                 {
-                    HrRightTop.Text = HrRightTopNew.Text;
-                    HrRightBottom.Text = HrRightBottomNew.Text;
+                    HrRightTopText.Text = HrRightTopTextNew.Text;
+                    HrRightBottomText.Text = HrRightBottomTextNew.Text;
 
-                    HRT = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightTop));
-                    HRB = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightBottom));
+                    HRT = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightTopContainer));
+                    HRB = CubeUtility.CreateFaceModel(faceHR, nameof(HrRightBottomContainer));
 
                     HRTN = new Model3DGroup();
                     HRBN = new Model3DGroup();
                 }
                 if (changeHour10)
                 {
-                    HrLeftTop.Text = HrLeftTopNew.Text;
-                    HrLeftBottom.Text = HrLeftBottomNew.Text;
+                    HrLeftTopText.Text = HrLeftTopTextNew.Text;
+                    HrLeftBottomText.Text = HrLeftBottomTextNew.Text;
 
-                    HLT = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftTop));
-                    HLB = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftBottom));
+                    HLT = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftTopContainer));
+                    HLB = CubeUtility.CreateFaceModel(faceHL, nameof(HrLeftBottomContainer));
 
                     HLTN = new Model3DGroup();
                     HLBN = new Model3DGroup();
