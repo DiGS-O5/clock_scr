@@ -62,14 +62,21 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path release_package | Out-Null
           New-Item -ItemType Directory -Force -Path release_package\source | Out-Null
-
-          Copy-Item -Path .\publish\Flip_Clock.scr -Destination .\release_package\Flip_Clock.scr -Force
-
+      
+          $scr = Get-ChildItem -Path .\publish -Filter Flip_Clock.scr -Recurse | Select-Object -First 1
+          if (-not $scr) {
+            throw "Flip_Clock.scr が見つかりませんでした"
+          }
+      
+          Copy-Item -Path $scr.FullName -Destination .\release_package\Flip_Clock.scr -Force
+      
           robocopy . .\release_package\source /E /XD .git .github .vs bin obj publish release_package
+      
           if ($LASTEXITCODE -gt 7) {
-            throw "ソースコードのコピーに失敗しました"
+            throw "ソースコードのコピーに失敗しました (robocopy exit code: $LASTEXITCODE)"
           }
 
+          exit 0
       - name: Create zip
         shell: pwsh
         run: |
