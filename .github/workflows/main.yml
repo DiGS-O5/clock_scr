@@ -1,0 +1,74 @@
+name: Build and Release Flip Clock
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        run: nuget restore clock_scr.sln
+
+      - name: Build solution
+        run: msbuild clock_scr.sln /p:Configuration=Release /p:Platform="Any CPU"
+
+      - name: Publish project
+        run: msbuild .\clock_scr\clock_scr.csproj /t:Publish /p:Configuration=Release /p:PublishDir=.\publish\
+
+      - name: Rename exe to Flip_Clock.scr
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -Path .\publish -Filter clock_scr.exe -Recurse | Select-Object -First 1
+          if (-not $exe) {
+            throw "clock_scr.exe が見つかりませんでした"
+          }
+          Rename-Item -Path $exe.FullName -NewName "Flip_Clock.scr"
+
+      - name: Prepare package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release_package | Out-Null
+          New-Item -ItemType Directory -Force -Path release_package\source | Out-Null
+
+          Copy-Item -Path .\publish\Flip_Clock.scr -Destination .\release_package\Flip_Clock.scr -Force
+
+          robocopy . .\release_package\source /E /XD .git .github bin obj .vs publish release_package
+          if ($LASTEXITCODE -gt 7) {
+            throw "ソースコードのコピーに失敗しました"
+          }
+
+      - name: Create zip
+        shell: pwsh
+        run: |
+          Compress-Archive -Path .\release_package\* -DestinationPath .\Flip_Clock.zip -Force
+
+      - name: Create tag
+        id: tagger
+        shell: pwsh
+        run: |
+          $tag = "build-" + (Get-Date -Format "yyyyMMdd-HHmmss")
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+
+      - name: Create GitHub Release and upload zip
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.tagger.outputs.tag }}
+          name: ${{ steps.tagger.outputs.tag }}
+          files: |
+            Flip_Clock.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
