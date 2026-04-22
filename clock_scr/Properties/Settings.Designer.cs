@@ -12,7 +12,7 @@ namespace clock_scr.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.13.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -38,12 +38,12 @@ namespace clock_scr.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("8")]
-        public double watchSize {
+        public double cameraDistance {
             get {
-                return ((double)(this["watchSize"]));
+                return ((double)(this["cameraDistance"]));
             }
             set {
-                this["watchSize"] = value;
+                this["cameraDistance"] = value;
             }
         }
         
@@ -82,22 +82,7 @@ namespace clock_scr.Properties {
                 this["offsetTF"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int dateIndication
-        {
-            get
-            {
-                return ((int)(this["dateIndication"]));
-            }
-            set
-            {
-                this["dateIndication"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFFFF")]
@@ -158,6 +143,112 @@ namespace clock_scr.Properties {
             }
         }
         
-
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int dateIndication {
+            get {
+                return ((int)(this["dateIndication"]));
+            }
+            set {
+                this["dateIndication"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("22")]
+        public double watchFontSize {
+            get {
+                return ((double)(this["watchFontSize"]));
+            }
+            set {
+                this["watchFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MS Gothic")]
+        public string selectTimeFont {
+            get {
+                return ((string)(this["selectTimeFont"]));
+            }
+            set {
+                this["selectTimeFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public string watchSize {
+            get {
+                return ((string)(this["watchSize"]));
+            }
+            set {
+                this["watchSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
+        public string dateIndicationLanguage {
+            get {
+                return ((string)(this["dateIndicationLanguage"]));
+            }
+            set {
+                this["dateIndicationLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MS Gothic")]
+        public string selectIndicationFont {
+            get {
+                return ((string)(this["selectIndicationFont"]));
+            }
+            set {
+                this["selectIndicationFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.48")]
+        public double gradientBorderDI {
+            get {
+                return ((double)(this["gradientBorderDI"]));
+            }
+            set {
+                this["gradientBorderDI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double offsetDI {
+            get {
+                return ((double)(this["offsetDI"]));
+            }
+            set {
+                this["offsetDI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int hideCursor {
+            get {
+                return ((int)(this["hideCursor"]));
+            }
+            set {
+                this["hideCursor"] = value;
+            }
+        }
     }
 }

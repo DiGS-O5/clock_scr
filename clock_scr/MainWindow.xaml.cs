@@ -35,6 +35,12 @@ namespace clock_scr
         public MainWindow(int screenNumber)
         {
             InitializeComponent();
+            Properties.Settings.Default.Reload();
+
+            if (Properties.Settings.Default.hideCursor == 1)
+            {
+                Cursor = Cursors.None;
+            }
 
             int windowBit = Properties.Settings.Default.checkBit;
             if ((windowBit & (1 << screenNumber)) != 0)

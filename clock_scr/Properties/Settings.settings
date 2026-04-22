@@ -5,7 +5,7 @@
     <Setting Name="offsetHM" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.2</Value>
     </Setting>
-    <Setting Name="watchSize" Type="System.Double" Scope="User">
+    <Setting Name="cameraDistance" Type="System.Double" Scope="User">
       <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="gradientBorder" Type="System.Double" Scope="User">
@@ -33,7 +33,31 @@
       <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="dateIndication" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="watchFontSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">22</Value>
+    </Setting>
+    <Setting Name="selectTimeFont" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MS Gothic</Value>
+    </Setting>
+    <Setting Name="watchSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="dateIndicationLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en-US</Value>
+    </Setting>
+    <Setting Name="selectIndicationFont" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MS Gothic</Value>
+    </Setting>
+    <Setting Name="gradientBorderDI" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.48</Value>
+    </Setting>
+    <Setting Name="offsetDI" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="hideCursor" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

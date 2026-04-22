@@ -23,58 +23,158 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="SliderDI" TargetType="{x:Type Slider}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedIndex, ElementName=cmbDateIndication}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SelectedIndex, ElementName=cmbDateIndication}" Value="1">
+                    <Setter Property="IsEnabled" Value="True"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Grid Background="#000">
-            <Frame x:Name="MainContentFrame" />
+        <Grid Background="#FFFFFF">
+            <Viewbox Stretch="Uniform">
+                <Grid Background="#000" Width="1920" Height="1080">
+                    <Frame x:Name="MainContentFrame"/>
+                </Grid>
+            </Viewbox>
+
         </Grid>
         <Grid Background="#FFF8F8F8" Grid.Column="1" Width="300">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
-            <StackPanel  Width="240" Margin="10" >
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Adjusts the hour and minute distance"/>
-                <Slider x:Name="sliderOffsetHM" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.0" Maximum="1.0" TickFrequency="0.1" SmallChange="0.1" LargeChange="0.1" ValueChanged="SliderChanged"/>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Watch Size"/>
-                <Slider x:Name="sliderWatchSize" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="7" Maximum="20" TickFrequency="1" SmallChange="1" LargeChange="1" ValueChanged="SliderChanged"/>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Border"/>
-                <Slider x:Name="sliderGradientBorder" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.46" Maximum="0.5" TickFrequency="0.005" SmallChange="0.005" LargeChange="0.005" ValueChanged="SliderChanged"/>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Time Format"/>
-                <ComboBox x:Name="cmbTimeFormat" Margin="10,10,10,10" IsEditable="False" SelectionChanged="ComboBoxChanged">
-                    <ComboBoxItem Content="24-hour format"/>
-                    <ComboBoxItem Content="12-hour format 1"/>
-                    <ComboBoxItem Content="12-hour format 2"/>
-                </ComboBox>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Offset Time Format"/>
-                    <Slider x:Name="sliderOffsetTF" Style="{DynamicResource SliderTF}" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.0" Maximum="0.5" TickFrequency="0.05" SmallChange="0.05" LargeChange="0.05" ValueChanged="SliderChanged"/>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Date Indication"/>
-                    <ComboBox x:Name="cmbDateIndication" Margin="10,10,10,10" IsEditable="False" SelectionChanged="ComboBoxChanged">
-                    <ComboBoxItem Content="Date Indicate OFF"/>
-                    <ComboBoxItem Content="Date Indicate ON"/>
-                </ComboBox>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Display Color"/>
-                <local:WpfColorPicker x:Name="selectDisplayColor" Margin="10,0,10,0"/>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Back Frame Color"/>
-                <local:WpfColorPicker x:Name="selectBackFrameColor" Margin="10,0,10,0"/>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Show Clock Window"/>
-                <local:WpfSelectWindow x:Name="selectWindow" Margin="10,0,10,0"/>
-                <TextBlock FontSize="12" FontWeight="Bold" Text="Exit Settings"/>
-                <local:WpfExitSetting x:Name="exitSetting" Margin="10,0,10,0"/>
-            </StackPanel>
-            </ScrollViewer>
+            <TabControl Grid.Row="0">
+                <TabItem Header="Clock Settings">
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
+                        <StackPanel  Width="240" Margin="10" >
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Adjusts the hour and minute distance"/>
+                            <Slider x:Name="sliderOffsetHM" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.0" Maximum="0.75" TickFrequency="0.1" SmallChange="0.1" LargeChange="0.1" ValueChanged="SliderChanged"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Distance from camera"/>
+                            <Slider x:Name="sliderWatchSize" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="7" Maximum="20" TickFrequency="1" SmallChange="1" LargeChange="1" ValueChanged="SliderChanged"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Border"/>
+                            <Slider x:Name="sliderGradientBorder" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.46" Maximum="0.5" TickFrequency="0.005" SmallChange="0.005" LargeChange="0.005" ValueChanged="SliderChanged"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Watch Font Size"/>
+                            <Slider x:Name="sliderWatchFontSize" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="20" Maximum="25" TickFrequency="1" SmallChange="1" LargeChange="1" ValueChanged="SliderChanged"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Time Format"/>
+                            <ComboBox x:Name="cmbTimeFormat" Margin="10,10,10,10" IsEditable="False" SelectionChanged="ComboBoxChanged">
+                                <ComboBoxItem Content="24-hour format"/>
+                                <ComboBoxItem Content="12-hour format 1"/>
+                                <ComboBoxItem Content="12-hour format 2"/>
+                            </ComboBox>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Offset Time Format"/>
+                            <Slider x:Name="sliderOffsetTF" Style="{DynamicResource SliderTF}" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.0" Maximum="0.3" TickFrequency="0.05" SmallChange="0.05" LargeChange="0.05" ValueChanged="SliderChanged"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Select Time Font"/>
+                            <local:ExComboBox x:Name="cmbSelectTimeFont" Margin="10,10,10,10" IsEditable="False" SelectionChanged="ComboBoxChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding LocalFontName}" FontFamily="{Binding FontFamily}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </local:ExComboBox>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Date Settings">
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
+                        <StackPanel  Width="240" Margin="10" >
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Date Indication"/>
+                            <ComboBox x:Name="cmbDateIndication" Margin="10,10,10,10" IsEditable="False" SelectionChanged="ComboBoxChanged">
+                                <ComboBoxItem Content="Date Indicate OFF"/>
+                                <ComboBoxItem Content="Date Indicate ON"/>
+                            </ComboBox>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Date Indication Language"/>
+                            <local:ExComboBox x:Name="cmbDateIndicationLanguage" Margin="10,10,10,10" IsEditable="False" SelectionChanged="ComboBoxChanged">
+                                <ComboBoxItem Content="en-US" Tag="en-US"/>
+                            </local:ExComboBox>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Select Indication Font"/>
+                            <local:ExComboBox x:Name="cmbSelectIndicationFont" Margin="10,10,10,10" IsEditable="False" SelectionChanged="ComboBoxChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding LocalFontName}" FontFamily="{Binding FontFamily}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </local:ExComboBox>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Border"/>
+                            <Slider x:Name="sliderGradientBorderDI" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.46" Maximum="0.5" TickFrequency="0.005" SmallChange="0.005" LargeChange="0.005" ValueChanged="SliderChanged"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Offset Data Indication"/>
+                            <Slider x:Name="sliderOffsetDI" Style="{DynamicResource SliderDI}" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Width="200" Foreground="Black" Minimum="0.0" Maximum="0.2" TickFrequency="0.05" SmallChange="0.05" LargeChange="0.05" ValueChanged="SliderChanged"/>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Basic Settings">
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
+                        <StackPanel  Width="240" Margin="10" >
+                            
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Display Color"/>
+                            <local:WpfColorPicker x:Name="selectDisplayColor" Margin="10,0,10,0"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Back Frame Color"/>
+                            <local:WpfColorPicker x:Name="selectBackFrameColor" Margin="10,0,10,0"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Hide Cursor"/>
+                            <ComboBox x:Name="cmbHideCursor" Margin="10,10,10,10" IsEditable="False">
+                                <ComboBoxItem Content="Hide Cursor OFF"/>
+                                <ComboBoxItem Content="Hide Cursor ON"/>
+                            </ComboBox>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Show Clock Window"/>
+                            <local:WpfSelectWindow x:Name="selectWindow" Margin="10,0,10,0"/>
+                            <TextBlock FontSize="12" FontWeight="Bold" Text="Exit Settings"/>
+                            <local:WpfExitSetting x:Name="exitSetting" Margin="10,0,10,0"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
             <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="Reset" CommandParameter="+x" Style="{DynamicResource ButtonStyle}" Click="Reset_Click" />
-                <Button Grid.Column="1" Content="Save" CommandParameter="+x" Style="{DynamicResource ButtonStyle}" Click="Save_Click"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Angle -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Reset / Save -->
+                </Grid.RowDefinitions>
+
+                <!-- 角度専用 -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                Content="Reset Angle"
+                Style="{DynamicResource ButtonStyle}"
+                Click="ResetAngle_Click"/>
+
+                    <Button Grid.Column="1"
+                Content="Save Angle"
+                Style="{DynamicResource ButtonStyle}"
+                Click="SaveAngle_Click"/>
+                </Grid>
+
+                <!-- 通常設定 -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                Content="Reset(No Angle)"
+                Style="{DynamicResource ButtonStyle}"
+                Click="Reset_Click"/>
+
+                    <Button Grid.Column="1"
+                Content="Save(No Angle)"
+                Style="{DynamicResource ButtonStyle}"
+                Click="Save_Click"/>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
