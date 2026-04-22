@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:clock_scr"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="1080" d:DesignWidth="1920"
       Title="MainPage">
 
     <Page.Resources>
@@ -40,6 +40,33 @@
             <Setter Property="Height" Value="7.5"/>
             <Setter Property="Background" Value="#FF222222"/>
         </Style>
+        <Style x:Key="WrapperContainerDITop" TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="15"/>
+            <Setter Property="Background" Value="#FF222222"/>
+            <Setter Property="OpacityMask">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0.49" Color="Black"/>
+                        <GradientStop Offset="0.49" Color="Transparent"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WrapperContainerDIBottom" TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="15"/>
+            <Setter Property="Background" Value="#FF222222"/>
+            <Setter Property="OpacityMask">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0.51" Color="Transparent"/>
+                        <GradientStop Offset="0.51" Color="Black"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="FaceStyleTop" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="TextAlignment" Value="Center"/>
@@ -47,7 +74,6 @@
             <Setter Property="FontSize" Value="25"/>
             <Setter Property="FontFamily" Value="MS Gothic"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Background" Value="#FF222222"/>
         </Style>
         <Style x:Key="FaceStyleBottom" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="White"/>
@@ -56,17 +82,20 @@
             <Setter Property="FontSize" Value="25"/>
             <Setter Property="FontFamily" Value="MS Gothic"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Background" Value="#FF222222"/>
         </Style>
         <Style x:Key="FaceStyleTF" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Width" Value="12"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="7"/>
             <Setter Property="FontFamily" Value="MS Gothic"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Background" Value="#FF222222"/>
+        </Style>
+        <Style x:Key="FaceStyleDI" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
     </Page.Resources>
     <Page.DataContext>
@@ -80,77 +109,134 @@
         <Grid x:Name="DicePanel" Background="#000">
             <Grid Visibility="Hidden">
                 <Border x:Name="HrLeftTopContainer" Style="{DynamicResource WrapperContainerTop}">
-                    <TextBlock x:Name="HrLeftTopText" Style="{DynamicResource FaceStyleTop}" Text="0" />
+                    <TextBlock x:Name="HrLeftTopText" Style="{DynamicResource FaceStyleTop}" Text="0" Background="Transparent" />
                 </Border>
                 <Border x:Name="HrLeftBottomContainer" Style="{DynamicResource WrapperContainerBottom}">
-                    <TextBlock x:Name="HrLeftBottomText" Style="{DynamicResource FaceStyleBottom}" Text="0" />
+                    <TextBlock x:Name="HrLeftBottomText" Style="{DynamicResource FaceStyleBottom}" Text="0" Background="Transparent" />
                 </Border>
                 <Border x:Name="HrLeftTopContainerNew" Style="{DynamicResource WrapperContainerTop}">
-                    <TextBlock x:Name="HrLeftTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="4" />
+                    <TextBlock x:Name="HrLeftTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="4" Background="Transparent" />
                 </Border>
                 <Border x:Name="HrLeftBottomContainerNew" Style="{DynamicResource WrapperContainerBottom}">
-                    <TextBlock x:Name="HrLeftBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="4" />
+                    <TextBlock x:Name="HrLeftBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="4" Background="Transparent" />
                 </Border>
                 <Border x:Name="HrRightTopContainer" Style="{DynamicResource WrapperContainerTop}" >
-                    <TextBlock x:Name="HrRightTopText" Style="{DynamicResource FaceStyleTop}" Text="1" />
+                    <TextBlock x:Name="HrRightTopText" Style="{DynamicResource FaceStyleTop}" Text="1" Background="Transparent" />
                 </Border>
                 <Border x:Name="HrRightBottomContainer" Style="{DynamicResource WrapperContainerBottom}">
-                    <TextBlock x:Name="HrRightBottomText" Style="{DynamicResource FaceStyleBottom}" Text="1" />
+                    <TextBlock x:Name="HrRightBottomText" Style="{DynamicResource FaceStyleBottom}" Text="1" Background="Transparent" />
                 </Border>
                 <Border x:Name="HrRightTopContainerNew" Style="{DynamicResource WrapperContainerTop}">
-                    <TextBlock x:Name="HrRightTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="5" />
+                    <TextBlock x:Name="HrRightTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="5" Background="Transparent" />
                 </Border>
                 <Border x:Name="HrRightBottomContainerNew" Style="{DynamicResource WrapperContainerBottom}">
-                    <TextBlock x:Name="HrRightBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="5" />
+                    <TextBlock x:Name="HrRightBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="5" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinLeftTopContainer" Style="{DynamicResource WrapperContainerTop}">
-                    <TextBlock x:Name="MinLeftTopText" Style="{DynamicResource FaceStyleTop}" Text="2" />
+                    <TextBlock x:Name="MinLeftTopText" Style="{DynamicResource FaceStyleTop}" Text="2" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinLeftBottomContainer" Style="{DynamicResource WrapperContainerBottom}" >
-                    <TextBlock x:Name="MinLeftBottomText" Style="{DynamicResource FaceStyleBottom}" Text="2" />
+                    <TextBlock x:Name="MinLeftBottomText" Style="{DynamicResource FaceStyleBottom}" Text="2" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinLeftTopContainerNew" Style="{DynamicResource WrapperContainerTop}">
-                    <TextBlock x:Name="MinLeftTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="6" />
+                    <TextBlock x:Name="MinLeftTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="6" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinLeftBottomContainerNew" Style="{DynamicResource WrapperContainerBottom}">
-                    <TextBlock x:Name="MinLeftBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="6" />
+                    <TextBlock x:Name="MinLeftBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="6" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinRightTopContainer" Style="{DynamicResource WrapperContainerTop}">
-                    <TextBlock x:Name="MinRightTopText" Style="{DynamicResource FaceStyleTop}" Text="3" />
+                    <TextBlock x:Name="MinRightTopText" Style="{DynamicResource FaceStyleTop}" Text="3" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinRightBottomContainer" Style="{DynamicResource WrapperContainerBottom}">
-                    <TextBlock x:Name="MinRightBottomText" Style="{DynamicResource FaceStyleBottom}" Text="3" />
+                    <TextBlock x:Name="MinRightBottomText" Style="{DynamicResource FaceStyleBottom}" Text="3" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinRightTopContainerNew" Style="{DynamicResource WrapperContainerTop}">
-                    <TextBlock x:Name="MinRightTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="7" />
+                    <TextBlock x:Name="MinRightTopTextNew" Style="{DynamicResource FaceStyleTop}" Text="7" Background="Transparent" />
                 </Border>
                 <Border x:Name="MinRightBottomContainerNew" Style="{DynamicResource WrapperContainerBottom}">
-                    <TextBlock x:Name="MinRightBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="7" />
+                    <TextBlock x:Name="MinRightBottomTextNew" Style="{DynamicResource FaceStyleBottom}" Text="7" Background="Transparent" />
                 </Border>
                 <Border x:Name="TimeFormatAMContainer" Style="{DynamicResource WrapperContainerTF}">
-                <TextBlock x:Name="TimeFormatAMText" Style="{DynamicResource FaceStyleTF}" Text="AM" />
+                    <TextBlock x:Name="TimeFormatAMText" Style="{DynamicResource FaceStyleTF}" Text="AM" Background="Transparent" />
                 </Border>
                 <Border x:Name="TimeFormatPMContainer" Style="{DynamicResource WrapperContainerTF}">
-                    <TextBlock x:Name="TimeFormatPMText" Style="{DynamicResource FaceStyleTF}" Text="PM" />
+                    <TextBlock x:Name="TimeFormatPMText" Style="{DynamicResource FaceStyleTF}" Text="PM" Background="Transparent" />
                 </Border>
-                <TextBlock x:Name="DateIndication" Style="{DynamicResource FaceStyleTF}" Width="45" Height="15">
-                    <Grid >
+                <Border x:Name="DateIndicationTopContainer" Style="{DynamicResource WrapperContainerDITop}">
+                    <Grid ClipToBounds="True">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="2"/>
-                            <ColumnDefinition Width="28"/>
+                            <ColumnDefinition x:Name="DateIndicationDayTopColumn" Width="14"/>
+                            <ColumnDefinition x:Name="DateIndicationSeparatorTopColumn" Width="1"/>
+                            <ColumnDefinition x:Name="DateIndicationTextTopColumn" Width="45"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"  x:Name="DateIndicationLeft" VerticalAlignment="Center" Text="dd" FontSize="12" />
-                        <Grid Grid.Column="2">
+                        <TextBlock Grid.Column="0" x:Name="DateIndicationDayTopText" Style="{DynamicResource FaceStyleDI}" Text="dd" TextAlignment="Center" FontSize="10" TextWrapping="NoWrap" Background="Transparent"/>
+                        <Grid Grid.Column="2" ClipToBounds="True">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="9"/>
                                 <RowDefinition Height="6"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" x:Name="DateIndicationTop" VerticalAlignment="Center" Text="dddd" TextAlignment="Left" FontSize="7" />
-                            <TextBlock Grid.Row="1" x:Name="DateIndicationDown" VerticalAlignment="Center" Text="MMMM yyyy" TextAlignment="Left" FontSize="4" />
+                            <TextBlock Grid.Row="0" x:Name="DateIndicationWeekdayTopText" Style="{DynamicResource FaceStyleDI}" Text="dddd" TextAlignment="Left" FontSize="7" TextWrapping="NoWrap" Background="Transparent"/>
+                            <TextBlock Grid.Row="1" x:Name="DateIndicationMonthYearTopText" Style="{DynamicResource FaceStyleDI}" Text="MMMM yyyy" TextAlignment="Left" FontSize="3.5" TextWrapping="NoWrap" Background="Transparent"/>
                         </Grid>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="DateIndicationBottomContainer" Style="{DynamicResource WrapperContainerDIBottom}">
+                    <Grid ClipToBounds="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="DateIndicationDayBottomColumn" Width="14"/>
+                            <ColumnDefinition x:Name="DateIndicationSeparatorBottomColumn" Width="1"/>
+                            <ColumnDefinition x:Name="DateIndicationTextBottomColumn" Width="45"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="DateIndicationDayBottomText" Style="{DynamicResource FaceStyleDI}" Text="dd" TextAlignment="Center" FontSize="10" TextWrapping="NoWrap" Background="Transparent"/>
+                        <Grid Grid.Column="2" ClipToBounds="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="9"/>
+                                <RowDefinition Height="6"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" x:Name="DateIndicationWeekdayBottomText" Style="{DynamicResource FaceStyleDI}" Text="dddd" TextAlignment="Left" FontSize="7" TextWrapping="NoWrap" Background="Transparent"/>
+                            <TextBlock Grid.Row="1" x:Name="DateIndicationMonthYearBottomText" Style="{DynamicResource FaceStyleDI}" Text="MMMM yyyy" TextAlignment="Left" FontSize="3.5" TextWrapping="NoWrap" Background="Transparent"/>
                         </Grid>
-                </TextBlock>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="DateIndicationTopContainerNew" Style="{DynamicResource WrapperContainerDITop}">
+                    <Grid ClipToBounds="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="DateIndicationDayTopColumnNew" Width="14"/>
+                            <ColumnDefinition x:Name="DateIndicationSeparatorTopColumnNew" Width="1"/>
+                            <ColumnDefinition x:Name="DateIndicationTextTopColumnNew" Width="45"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="DateIndicationDayTopTextNew" Style="{DynamicResource FaceStyleDI}" Text="dd" TextAlignment="Center" FontSize="10" TextWrapping="NoWrap" Background="Transparent"/>
+                        <Grid Grid.Column="2" ClipToBounds="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="9"/>
+                                <RowDefinition Height="6"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" x:Name="DateIndicationWeekdayTopTextNew" Style="{DynamicResource FaceStyleDI}" Text="dddd" TextAlignment="Left" FontSize="7" TextWrapping="NoWrap" Background="Transparent"/>
+                            <TextBlock Grid.Row="1" x:Name="DateIndicationMonthYearTopTextNew" Style="{DynamicResource FaceStyleDI}" Text="MMMM yyyy" TextAlignment="Left" FontSize="3.5" TextWrapping="NoWrap" Background="Transparent"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="DateIndicationBottomContainerNew" Style="{DynamicResource WrapperContainerDIBottom}">
+                    <Grid ClipToBounds="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="DateIndicationDayBottomColumnNew" Width="14"/>
+                            <ColumnDefinition x:Name="DateIndicationSeparatorBottomColumnNew" Width="1"/>
+                            <ColumnDefinition x:Name="DateIndicationTextBottomColumnNew" Width="45"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="DateIndicationDayBottomTextNew" Style="{DynamicResource FaceStyleDI}" Text="dd" TextAlignment="Center" FontSize="10" TextWrapping="NoWrap" Background="Transparent"/>
+                        <Grid Grid.Column="2" ClipToBounds="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="9"/>
+                                <RowDefinition Height="6"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" x:Name="DateIndicationWeekdayBottomTextNew" Style="{DynamicResource FaceStyleDI}" Text="dddd" TextAlignment="Left" FontSize="7" TextWrapping="NoWrap" Background="Transparent"/>
+                            <TextBlock Grid.Row="1" x:Name="DateIndicationMonthYearBottomTextNew" Style="{DynamicResource FaceStyleDI}" Text="MMMM yyyy" TextAlignment="Left" FontSize="3.5" TextWrapping="NoWrap" Background="Transparent"/>
+                        </Grid>
+                    </Grid>
+                </Border>
             </Grid>
             <Viewport3D x:Name="viewport">
                 <Viewport3D.Camera>
@@ -178,7 +264,10 @@
                 <ModelVisual3D Content="{Binding MRTN, ElementName=window}" Transform="{Binding CubeTransform}"/>
                 <ModelVisual3D Content="{Binding MRBN, ElementName=window}" Transform="{Binding CubeTransform}"/>
                 <ModelVisual3D Content="{Binding TF, ElementName=window}" Transform="{Binding CubeTransform}"/>
-                <ModelVisual3D Content="{Binding DI, ElementName=window}" Transform="{Binding CubeTransform}"/>
+                <ModelVisual3D Content="{Binding DIT, ElementName=window}" Transform="{Binding CubeTransform}"/>
+                <ModelVisual3D Content="{Binding DIB, ElementName=window}" Transform="{Binding CubeTransform}"/>
+                <ModelVisual3D Content="{Binding DITN, ElementName=window}" Transform="{Binding CubeTransform}"/>
+                <ModelVisual3D Content="{Binding DIBN, ElementName=window}" Transform="{Binding CubeTransform}"/>
             </Viewport3D>
         </Grid>
     </Grid>
