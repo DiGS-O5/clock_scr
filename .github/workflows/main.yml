@@ -28,13 +28,13 @@ jobs:
           msbuild-architecture: x64
 
       - name: Restore packages
-        run: nuget restore clock_scr.sln
+        run: dotnet restore .\clock_scr\clock_scr.csproj -r win-x64
 
-      - name: Build solution
-        run: msbuild clock_scr.sln /p:Configuration=Release /p:Platform="Any CPU"
+      - name: Build project
+        run: msbuild .\clock_scr\clock_scr.csproj /p:Configuration=Release /p:RuntimeIdentifier=win-x64
 
       - name: Publish project
-        run: msbuild .\clock_scr\clock_scr.csproj /t:Publish /p:PublishProfile=FolderProfile /p:PublishDir="${{ github.workspace }}\publish\\"
+        run: msbuild .\clock_scr\clock_scr.csproj /t:Publish /p:PublishProfile=FolderProfile /p:RuntimeIdentifier=win-x64 /p:PublishDir="${{ github.workspace }}\publish\\"
 
       - name: Show publish files
         shell: pwsh
